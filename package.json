@@ -1,0 +1,20 @@
+{
+  "name": "option-oracle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "y-options": "^2.0.0"
+  },
+  "devDependencies": {
+    "tablify": "^0.1.5"
+  }
+}
