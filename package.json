@@ -15,6 +15,7 @@
     "y-options": "^2.0.0"
   },
   "devDependencies": {
-    "tablify": "^0.1.5"
+    "tablify": "^0.1.5",
+    "underscore": "^1.7.0"
   }
 }

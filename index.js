@@ -12,6 +12,8 @@ module.exports = function(quotes) {
     pair.risk = (pair.high.strike - quote)/quote
     pair.cost = pair.low.ask - pair.high.bid
     pair.maxProfit = (pair.high.strike - pair.low.strike) - pair.cost
+    pair.spread = (pair.maxProfit - pair.cost) / pair.cost
+    pair.score = pair.spread/Math.pow(pair.risk, 3)
   })
 
   return pairs
@@ -20,8 +22,9 @@ module.exports = function(quotes) {
 function getPairs (calls) {
   var pairs = []
   calls.forEach(function(callLower, i) {
-    var callHigher = calls[i+1]
-    if (callHigher) pairs.push({low: callLower, high: callHigher})
+    for (var j = i+1; j < calls.length; j++) {
+      pairs.push({low: callLower, high: calls[j]})
+    }
   })
   return pairs
 }
