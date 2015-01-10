@@ -1,30 +1,17 @@
-module.exports = function(quotes) {
-  var quote = quotes.quote
-  var callsAll = quotes.calls
+var http = require('http')
+var Router = require('routes-router')
+var Corsify = require('corsify')
+var sendHtml = require('send-data/html')
 
-  var calls = callsAll.filter(function(call) {
-    if (call.strike <= quote) return false
-    return true
-  })
+var api = require('./api')
 
-  var pairs = getPairs(calls)
-  pairs.forEach(function(pair) {
-    pair.risk = (pair.high.strike - quote)/quote
-    pair.cost = pair.low.ask - pair.high.bid
-    pair.maxProfit = (pair.high.strike - pair.low.strike) - pair.cost
-    pair.spread = (pair.maxProfit - pair.cost) / pair.cost
-    pair.score = pair.spread/Math.pow(pair.risk, 3)
-  })
+var cors = Corsify({'Access-Control-Allow-Methods': 'GET'})
 
-  return pairs
-}
+var app = Router()
+app.addRoute('/api/quotes/:symbol/:date', cors(api.getQuotes))
+app.addRoute('/api/spreads/:symbol/:date', cors(api.getSpreads))
 
-function getPairs (calls) {
-  var pairs = []
-  calls.forEach(function(callLower, i) {
-    for (var j = i+1; j < calls.length; j++) {
-      pairs.push({low: callLower, high: calls[j]})
-    }
-  })
-  return pairs
-}
+var port = process.env.PORT || 3454
+http.createServer(app).listen(port)
+
+console.log('OptionsOracle listening on port', port)
